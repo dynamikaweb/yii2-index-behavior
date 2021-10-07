@@ -1,7 +1,7 @@
 {
-    "name": "dynamikaweb/yii2-template",
-    "description": "",
-    "type": "yii2-extension",
+    "name": "dynamikaweb/yii2-index-behavior",
+    "description": "Tool for automatic real-time data indexing",
+    "type": "yii2-index-behavior",
     "keywords": ["dynamika", "yii2"],
     "license": "BSD-3-Clause",
     "authors": [
@@ -17,8 +17,8 @@
         }
     ],
     "support": {
-        "issues": "http://github.com/dynamikaweb/yii2-template/issues",
-        "source": "http://github.com/dynamikaweb/yii2-template"
+        "issues": "http://github.com/dynamikaweb/yii2-index-behavior/issues",
+        "source": "http://github.com/dynamikaweb/yii2-index-behavior"
     },
     "minimum-stability": "dev",
     "require": {
@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "dynamikaweb\\": "src"
+            "dynamikaweb\\index\\": "src"
         }
     },
     "repositories": [
