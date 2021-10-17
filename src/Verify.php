@@ -4,6 +4,7 @@ namespace dynamikaweb\index;
 
 use Yii;
 use Closure;
+use Exception;
 use yii\db\BaseActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
@@ -60,12 +61,35 @@ class Verify
      */
     public static function hasTimestampBehavior($class)
     {
-        $behaviors = array_filter(static::construct($class)->behaviors(), 
-            function($behavior) {
-                return $behavior['class'] == TimestampBehavior::classname();
-            }   
-        );
+        return self::haveSomeBehavior($class, [TimestampBehavior::classname()]);
+    }
 
-        return !empty($behaviors);
+    /**
+     * @return boolean
+     */
+    public static function hasIndexBehavior($class)
+    {
+        return self::haveSomeBehavior($class, [IndexBehavior::classname()]);
+    }
+    
+    /**
+     * @return boolean
+     */
+    public static function haveSomeBehavior($class, $needs)
+    {
+        try {
+            if (!method_exists($class, 'behaviors')) {
+                return false;
+            }
+
+            return !empty(array_filter(static::construct($class)->behaviors(), 
+                function($behavior) use ($needs) {
+                    return in_array($behavior['class'], $needs);
+                }   
+            ));
+        }
+        catch (Exception $e) {
+            return false;
+        }
     }
 }
