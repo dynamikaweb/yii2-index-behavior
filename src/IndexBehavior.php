@@ -38,6 +38,7 @@ class IndexBehavior extends \yii\base\Behavior
     public function events()
     {
         return [
+            BaseActiveRecord::EVENT_BEFORE_DELETE => 'deindex',
             BaseActiveRecord::EVENT_AFTER_INSERT => 'index',
             BaseActiveRecord::EVENT_AFTER_UPDATE => 'index',
         ];
@@ -52,15 +53,31 @@ class IndexBehavior extends \yii\base\Behavior
         foreach($searchFields as $field)
         {
             $attribute = $field['name'];
+            $value = ArrayHelper::getValue($field, 'value', null);
             $type = ArrayHelper::getValue($field, 'type', IndexFormat::TYPE_STRING);
-            $value = IndexFormat::toString($field['value'], $type);
+
+            if ($type == IndexFormat::TYPE_FILTER && $value){
+                continue;
+            }
+            else if ($type == IndexFormat::TYPE_FILTER && !$value) {
+                return self::deindex($event);
+            }
+
+            $value = IndexFormat::toString($value, $type);
             $model->setAttribute($attribute, $value);
         }
-
 
         if (!$model->save()) {
             throw new Exception("An error occurred while indexing: ".current($model->firstErrors));
         }
+    }
+
+    public function deindex($event)
+    {
+        self::verify();
+        $searchFields = call_user_func($this->searchFields, $this->owner);
+        $model = self::findModel($searchFields);
+        $model->delete();
     }
 
     protected function findModel($fields)
