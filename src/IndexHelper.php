@@ -56,4 +56,32 @@ class IndexHelper
         return $models;
     }
 
+    /**
+     * @return void
+     */
+    public static function updateOne($model)
+    {
+        $behaviors = array_filter($model->behaviors, function ($behavior) {
+            return $behavior instanceof IndexBehavior;
+        });
+        $behavior = current($behaviors);
+        $behavior->index([]);
+    }
+
+    /**
+     * @return void
+     */
+    public static function updateAll($alias)
+    {
+        array_map(function ($class) {
+            $class = new $class;
+            array_map(function ($model) {
+                self::updateOne($model);
+            },
+                $class::find()->all()
+            );
+        },
+            self::listClass($alias)
+        );
+    }
 }
