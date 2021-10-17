@@ -15,6 +15,7 @@ class IndexFormat
     const TYPE_DIRTY = 'dirty';
     const TYPE_DATE = 'date';
     const TYPE_URL = 'url';
+    const TYPE_URL_BASELESS = 'url_baseless';
 
     /**
      * @throws Exception
@@ -36,6 +37,9 @@ class IndexFormat
 
             case self::TYPE_URL: 
                 return self::fromUrl($value);
+
+            case self::TYPE_URL_BASELESS: 
+                return preg_replace('#'.Yii::$app->request->baseUrl.'#', '', self::fromUrl($value), 1);
 
             default:
                 throw new Exception("type '{$format}' not exists");
