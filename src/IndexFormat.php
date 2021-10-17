@@ -9,6 +9,7 @@ use yii\base\Exception;
 
 class IndexFormat
 {
+    const TYPE_FILTER = 'filter';
     const TYPE_STRING = 'string';
     const TYPE_UNIQUE = 'unique';
     const TYPE_DIRTY = 'dirty';
