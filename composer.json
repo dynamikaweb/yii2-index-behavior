@@ -20,7 +20,7 @@
         "issues": "http://github.com/dynamikaweb/yii2-index-behavior/issues",
         "source": "http://github.com/dynamikaweb/yii2-index-behavior"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=7.0",
         "yiisoft/yii2": "*"
