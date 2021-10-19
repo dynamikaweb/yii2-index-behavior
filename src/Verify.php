@@ -13,7 +13,7 @@ class Verify
     /**
      * @return object
      */
-    private function construct($class)
+    private static function construct($class)
     {
         return is_string($class)? new $class: $class;
     }
